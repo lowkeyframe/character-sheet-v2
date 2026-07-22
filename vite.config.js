@@ -39,6 +39,6 @@ function saveMeJsonPlugin() {
 
 // IMPORTANT: doit correspondre au nom du repo GitHub pour un déploiement GitHub Pages correct
 export default defineConfig({
-  base: '/character-sheet-claude/',
+  base: '/character-sheet-v2/',
   plugins: [react(), saveMeJsonPlugin()],
 })
