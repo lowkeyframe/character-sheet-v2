@@ -1,0 +1,82 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* fallback variables (dark-minimal) so there's no FOUC before data-theme is applied */
+  --bg-color: #0f0f13;
+  --surface-color: #16161d;
+  --card-color: #1e1e27;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-main: #e4e4e7;
+  --text-muted: #a1a1aa;
+  --accent-color: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  --danger-color: #ef4444;
+  --success-color: #10b981;
+  --gold-color: #fbbf24;
+  --tag-bg: rgba(255, 255, 255, 0.06);
+  --radius: 12px;
+  --font-main: 'Inter', system-ui, sans-serif;
+  --shadow-panel: 0 4px 20px rgba(0, 0, 0, 0.25);
+
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0 0 0.5em;
+  font-weight: 600;
+}
+
+p {
+  margin: 0 0 0.75em;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-main);
+  background: rgba(127, 127, 127, 0.08);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 25%, transparent);
+}
+
+a {
+  color: var(--accent-color);
+}
+
+.error-msg {
+  color: var(--danger-color);
+}
+
+.success-msg {
+  color: var(--success-color);
+}
+
+.empty-msg, .loading-msg {
+  color: var(--text-muted);
+  font-style: italic;
+}

@@ -1,0 +1,25 @@
+body[data-theme='cyber'] {
+  --bg-color: #0a0b0f;
+  --surface-color: #10121a;
+  --card-color: #131722;
+  --border-color: rgba(102, 252, 241, 0.25);
+  --text-main: #c5f6f3;
+  --text-muted: #66fcf1a0;
+  --accent-color: #66fcf1;
+  --accent-hover: #45a29e;
+  --accent-gradient: linear-gradient(135deg, #66fcf1 0%, #ff003c 100%);
+  --danger-color: #ff003c;
+  --success-color: #39ff88;
+  --gold-color: #ffd200;
+  --tag-bg: rgba(102, 252, 241, 0.08);
+  --radius: 2px;
+  --font-main: 'Orbitron', 'Rajdhani', sans-serif;
+  --shadow-panel: 0 0 20px rgba(102, 252, 241, 0.15);
+}
+
+body[data-theme='cyber'] {
+  background-image:
+    linear-gradient(rgba(102, 252, 241, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(102, 252, 241, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}

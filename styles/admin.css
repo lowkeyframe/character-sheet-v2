@@ -1,0 +1,131 @@
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.student-form {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.student-form .form-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.student-list {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+}
+
+.student-search {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.student-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.student-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.student-list li:hover {
+  background: var(--tag-bg);
+}
+
+.student-list li.selected {
+  background: var(--accent-gradient);
+  color: #fff;
+}
+
+.student-code {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.admin-main {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-tabs button {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+}
+
+.admin-tabs button.active {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+}
+
+.badge-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.badge-toggle-row.disabled {
+  opacity: 0.4;
+}
+
+.badge-role-hint {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.audit-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.audit-log-table th, .audit-log-table td {
+  text-align: left;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-project-list, .admin-skill-summary {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-project-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
