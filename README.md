@@ -1,4 +1,4 @@
-# Feuille de personnage — multimédia
+# Feuille de personnage Gab — multimédia
 
 Une fiche de personnage RPG pour suivre ses compétences, projets et badges au fil du programme.
 
