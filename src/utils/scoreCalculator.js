@@ -4,7 +4,7 @@ export function computeSkillScores(projects, endorsements) {
   const safeEndorsements = endorsements || []
 
   for (const project of safeProjects) {
-    const projectEndorsements = safeEndorsements.filter(e => e.project_id === project.id).length
+    const projectEndorsements = safeEndorsements.filter(e => e.projectId === project.id).length
     const projectValue = (project.skills || []).length
     const endorsementBoost = projectEndorsements * 10
 

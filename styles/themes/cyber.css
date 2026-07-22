@@ -7,7 +7,7 @@ body[data-theme='cyber'] {
   --text-muted: #66fcf1a0;
   --accent-color: #66fcf1;
   --accent-hover: #45a29e;
-  --accent-gradient: linear-gradient(135deg, #66fcf1 0%, #ff003c 100%);
+  --accent-gradient: linear-gradient(135deg, #0d7377 0%, #14213d 100%);
   --danger-color: #ff003c;
   --success-color: #39ff88;
   --gold-color: #ffd200;

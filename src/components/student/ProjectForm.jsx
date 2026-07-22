@@ -1,8 +1,19 @@
 import { useMemo, useState } from 'react'
 import skillsData from '../../data/skills.json'
+import { readFileAsDataUrl } from '../../utils/readFileAsDataUrl'
 
 const ALL_COURSES = [...new Set(Object.values(skillsData).flatMap(s => s.courses))].sort()
 const SKILL_LIST = Object.values(skillsData)
+const SEASONS = ['Automne', 'Hiver', 'Été']
+const YEARS = Array.from({ length: 11 }, (_, i) => 2020 + i)
+
+function parseSemester(semester) {
+  const parts = (semester || '').trim().split(/\s+/)
+  if (parts.length === 2 && SEASONS.includes(parts[0]) && YEARS.includes(Number(parts[1]))) {
+    return { season: parts[0], year: parts[1] }
+  }
+  return { season: '', year: '' }
+}
 
 export default function ProjectForm({ project, onSave, onCancel }) {
   const isEdit = Boolean(project)
@@ -12,15 +23,31 @@ export default function ProjectForm({ project, onSave, onCancel }) {
   const [customCourse, setCustomCourse] = useState(
     project && !ALL_COURSES.includes(project.course) ? project.course : ''
   )
-  const [semester, setSemester] = useState(project?.semester || '')
+  const initialSemester = useMemo(() => parseSemester(project?.semester), [project])
+  const [season, setSeason] = useState(initialSemester.season)
+  const [year, setYear] = useState(initialSemester.year)
   const [link, setLink] = useState(project?.link || '')
   const [skills, setSkills] = useState(project?.skills || [])
+  const [thumbnailDataUrl, setThumbnailDataUrl] = useState(project?.thumbnailDataUrl || '')
+  const [uploadingThumbnail, setUploadingThumbnail] = useState(false)
   const [saving, setSaving] = useState(false)
 
   const usingCustomCourse = useMemo(() => course === '__autre__', [course])
 
   const toggleSkill = (skillId) => {
     setSkills(prev => prev.includes(skillId) ? prev.filter(s => s !== skillId) : [...prev, skillId])
+  }
+
+  const handleThumbnailChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadingThumbnail(true)
+    try {
+      setThumbnailDataUrl(await readFileAsDataUrl(file))
+    } catch (err) {
+      alert(`Échec de la lecture de l'image : ${err.message}`)
+    }
+    setUploadingThumbnail(false)
   }
 
   const handleSubmit = async (e) => {
@@ -32,9 +59,10 @@ export default function ProjectForm({ project, onSave, onCancel }) {
         name: name.trim(),
         description: description.trim(),
         course: usingCustomCourse ? customCourse.trim() : course,
-        semester: semester.trim(),
+        semester: season && year ? `${season} ${year}` : '',
         skills,
         link: link.trim(),
+        thumbnailDataUrl,
       })
     } finally {
       setSaving(false)
@@ -44,6 +72,17 @@ export default function ProjectForm({ project, onSave, onCancel }) {
   return (
     <form className="project-form" onSubmit={handleSubmit}>
       <h3>{isEdit ? 'Modifier le projet' : 'Ajouter un projet'}</h3>
+
+      <label>
+        Vignette du projet
+        <div className="thumbnail-upload-row">
+          {thumbnailDataUrl && <img className="project-thumbnail-preview" src={thumbnailDataUrl} alt="" />}
+          <input type="file" accept="image/*" onChange={handleThumbnailChange} disabled={uploadingThumbnail} />
+          {thumbnailDataUrl && (
+            <button type="button" onClick={() => setThumbnailDataUrl('')}>Retirer</button>
+          )}
+        </div>
+      </label>
 
       <label>
         Nom du projet
@@ -74,7 +113,16 @@ export default function ProjectForm({ project, onSave, onCancel }) {
 
       <label>
         Session
-        <input value={semester} onChange={(e) => setSemester(e.target.value)} placeholder="Ex : Automne 2025" />
+        <div className="session-select-row">
+          <select value={season} onChange={(e) => setSeason(e.target.value)}>
+            <option value="">Saison</option>
+            {SEASONS.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <select value={year} onChange={(e) => setYear(e.target.value)}>
+            <option value="">Année</option>
+            {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
+          </select>
+        </div>
       </label>
 
       <label>
@@ -91,7 +139,7 @@ export default function ProjectForm({ project, onSave, onCancel }) {
               checked={skills.includes(skill.id)}
               onChange={() => toggleSkill(skill.id)}
             />
-            {skill.icon} {skill.label}
+            {skill.label}
           </label>
         ))}
       </fieldset>

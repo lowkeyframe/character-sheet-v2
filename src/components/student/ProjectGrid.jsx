@@ -3,39 +3,42 @@ import ProjectModal from './ProjectModal'
 
 function ProjectCard({ project, onClick }) {
   return (
-    <div className="project-card" onClick={onClick}>
+    <button type="button" className="project-card" onClick={onClick}>
+      {project.thumbnailDataUrl ? (
+        <img className="project-thumbnail" src={project.thumbnailDataUrl} alt="" />
+      ) : (
+        <div className="project-thumbnail-placeholder" aria-hidden="true">🖼️</div>
+      )}
       <h4>{project.name}</h4>
       {project.course && <p className="project-meta">{project.course}</p>}
       <div className="project-skill-count">{(project.skills || []).length} compétence(s)</div>
-    </div>
+    </button>
   )
 }
 
 export default function ProjectGrid({
   projects,
   isOwner,
-  canEndorseAs,
-  endorsementCountFor,
-  hasEndorsed,
+  endorsementsFor,
+  githubInfo,
   pinnedCount,
   onAddProject,
   onUpdateProject,
   onDeleteProject,
   onTogglePin,
-  onEndorse,
-  onRemoveEndorsement,
+  onAddEndorsement,
 }) {
   const [selected, setSelected] = useState(null) // project | 'new' | null
   const [expanded, setExpanded] = useState(false)
 
-  const pinned = projects.filter(p => p.pinned).sort((a, b) => (a.pin_order || 1) - (b.pin_order || 1))
+  const pinned = projects.filter(p => p.pinned).sort((a, b) => (a.pinOrder || 1) - (b.pinOrder || 1))
   const rest = projects.filter(p => !p.pinned)
 
   const closeModal = () => setSelected(null)
 
-  const handleSave = async (data, projectId) => {
-    if (projectId) await onUpdateProject(projectId, data)
-    else await onAddProject(data)
+  const handleSave = (data, projectId) => {
+    if (projectId) onUpdateProject(projectId, data)
+    else onAddProject(data)
   }
 
   const activeProject = selected === 'new' ? null : selected
@@ -77,16 +80,14 @@ export default function ProjectGrid({
         <ProjectModal
           project={activeProject}
           isOwner={isOwner}
-          canEndorseAs={canEndorseAs}
-          endorsementCount={activeProject ? endorsementCountFor(activeProject.id) : 0}
-          endorsed={activeProject ? hasEndorsed(activeProject.id, canEndorseAs) : false}
+          endorsements={activeProject ? endorsementsFor(activeProject.id) : []}
+          githubInfo={githubInfo}
           pinnedCount={pinnedCount}
           onClose={closeModal}
           onSave={handleSave}
           onDelete={onDeleteProject}
           onTogglePin={onTogglePin}
-          onEndorse={onEndorse}
-          onRemoveEndorsement={onRemoveEndorsement}
+          onAddEndorsement={onAddEndorsement}
         />
       )}
     </section>

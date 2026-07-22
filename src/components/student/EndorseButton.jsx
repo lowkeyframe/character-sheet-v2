@@ -1,36 +1,23 @@
-import { useState } from 'react'
+export default function EndorseButton({ project, githubInfo }) {
+  const { owner, repo } = githubInfo || {}
 
-export default function EndorseButton({ project, isOwnProject, canEndorseAs, endorsed, onEndorse, onRemove }) {
-  const [busy, setBusy] = useState(false)
-
-  if (isOwnProject) return null
-
-  if (!canEndorseAs) {
-    return <p className="endorse-hint">Connectez-vous pour endosser ce projet.</p>
+  if (!owner || !repo) {
+    return (
+      <p className="endorse-hint">
+        Le propriétaire de cette fiche doit renseigner ses infos GitHub (owner/repo) pour activer l'appui par les pairs.
+      </p>
+    )
   }
 
-  const handleClick = async () => {
-    setBusy(true)
-    try {
-      if (endorsed) {
-        await onRemove(project.id)
-      } else {
-        await onEndorse(project.id)
-      }
-    } catch (err) {
-      alert(err.message)
-    }
-    setBusy(false)
-  }
+  const title = encodeURIComponent(`Appui pour le projet : ${project.name}`)
+  const body = encodeURIComponent(
+    `Je souhaite signaler mon appui pour le projet « ${project.name} » (id: ${project.id}).\n\nCe que j'apprécie / pourquoi je l'endosse :\n`
+  )
+  const url = `https://github.com/${owner}/${repo}/issues/new?title=${title}&body=${body}&labels=appui`
 
   return (
-    <button
-      type="button"
-      className={`endorse-btn ${endorsed ? 'endorsed' : ''}`}
-      onClick={handleClick}
-      disabled={busy}
-    >
-      {endorsed ? '★ Endossé' : '☆ Endosser'}
-    </button>
+    <a className="endorse-btn" href={url} target="_blank" rel="noreferrer">
+      ☆ Signaler un appui (GitHub)
+    </a>
   )
 }

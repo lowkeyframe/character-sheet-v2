@@ -24,13 +24,13 @@ export default function SkillPanel({ skillScores }) {
       .sort((a, b) => b.score - a.score)
   }, [skillScores])
 
-  const top6 = allSkills.slice(0, 6)
-  const rest = allSkills.slice(6)
+  const top4 = allSkills.slice(0, 4)
+  const rest = allSkills.slice(4)
   const maxScore = allSkills[0]?.score || 0
 
   return (
     <div className="skill-panel">
-      {top6.map(skill => (
+      {top4.map(skill => (
         <SkillRow key={skill.id} skill={skill} maxScore={maxScore} />
       ))}
 

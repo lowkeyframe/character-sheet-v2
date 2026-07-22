@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { uploadAvatar } from '../../services/storageService'
+import { readFileAsDataUrl } from '../../utils/readFileAsDataUrl'
 
-export default function ProfileCard({ profile, isOwner, studentCode, onUpdate }) {
+export default function ProfileCard({ profile, isOwner, onUpdate }) {
   const [editing, setEditing] = useState(false)
   const [alias, setAlias] = useState(profile.alias || '')
   const [bio, setBio] = useState(profile.bio || '')
@@ -9,6 +9,7 @@ export default function ProfileCard({ profile, isOwner, studentCode, onUpdate })
   const [newInterest, setNewInterest] = useState('')
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [justSaved, setJustSaved] = useState(false)
 
   const startEdit = () => {
     setAlias(profile.alias || '')
@@ -33,26 +34,28 @@ export default function ProfileCard({ profile, isOwner, studentCode, onUpdate })
     if (!file) return
     setUploading(true)
     try {
-      const avatarUrl = await uploadAvatar(studentCode, file)
-      await onUpdate({ avatarUrl })
+      const avatarDataUrl = await readFileAsDataUrl(file)
+      onUpdate({ avatarDataUrl })
     } catch (err) {
-      alert(`Échec du téléversement de l'avatar : ${err.message}`)
+      alert(`Échec de la lecture de l'image : ${err.message}`)
     }
     setUploading(false)
   }
 
-  const handleSave = async () => {
+  const handleSave = () => {
     setSaving(true)
-    const ok = await onUpdate({ alias, bio, interests })
+    onUpdate({ alias, bio, interests })
     setSaving(false)
-    if (ok) setEditing(false)
+    setEditing(false)
+    setJustSaved(true)
+    setTimeout(() => setJustSaved(false), 2000)
   }
 
   return (
     <div className="profile-card">
       <div className="profile-avatar-wrapper">
-        {profile.avatarUrl ? (
-          <img className="profile-avatar" src={profile.avatarUrl} alt={profile.alias} />
+        {profile.avatarDataUrl ? (
+          <img className="profile-avatar" src={profile.avatarDataUrl} alt={profile.alias} />
         ) : (
           <div className="profile-avatar profile-avatar-placeholder">{(profile.alias || '?')[0]}</div>
         )}
@@ -76,6 +79,7 @@ export default function ProfileCard({ profile, isOwner, studentCode, onUpdate })
           {isOwner && (
             <button type="button" className="btn-edit" onClick={startEdit}>Modifier le profil</button>
           )}
+          {justSaved && <p className="export-success-msg">✅ Profil mis à jour</p>}
         </div>
       ) : (
         <div className="profile-edit-form">

@@ -64,6 +64,14 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 25%, transparent);
 }
 
+/* Le menu déroulant natif d'un <select> a un fond blanc géré par l'OS/navigateur,
+   quel que soit le thème de la page : on force donc le texte des options en noir
+   pour qu'il reste lisible une fois la liste ouverte. */
+select option {
+  color: #111;
+  background: #fff;
+}
+
 a {
   color: var(--accent-color);
 }

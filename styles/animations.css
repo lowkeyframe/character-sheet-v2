@@ -3,8 +3,22 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes sectionReveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .modal-content {
   animation: fadeIn 0.15s ease-out;
+}
+
+.profile-card,
+.soft-skills-panel,
+.badge-wall,
+.level-bar,
+.project-grid-section,
+.skills-section {
+  animation: sectionReveal 0.4s ease-out both;
 }
 
 .project-card, .badge-item, .tag {
